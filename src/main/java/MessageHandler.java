@@ -1,7 +1,7 @@
 import java.nio.ByteBuffer;
 
 public class MessageHandler {
-    public static final byte HANDLER_MAGIC = 0x14;
+    public static final byte HANDLER_MAGIC = 0x13;
 
     byte bMagic;
     byte bSrc;

@@ -45,13 +45,11 @@ public class MessageHandler {
         wCrc16Msg   = Buffer.getShort();
         Message = new MessagePOJO(bMsg);
 
-
-        short s = Message.CheckSum();
         if(wCrc16Header != CheckSum())
         {
             throw new ExceptionInInitializerError("Wrong CheckSum");
         }
-        else if(wCrc16Msg != s)
+        else if(wCrc16Msg != Message.CheckSum())
         {
             throw new ExceptionInInitializerError("Wrong CheckSum");
         }

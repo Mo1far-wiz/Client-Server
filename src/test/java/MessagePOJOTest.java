@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MessagePOJOTest {
 
     @Test
-    public void testSerialization() {
+    public void testSerialization() throws Exception {
         int cType = 123;
         int bUserId = 456;
         byte[] message = "Hello, world!".getBytes();
@@ -21,16 +21,14 @@ public class MessagePOJOTest {
         ByteBuffer buffer = ByteBuffer.wrap(serialized);
         int serializedCType = buffer.getInt();
         int serializedBUserId = buffer.getInt();
-        byte[] serializedMessage = new byte[serialized.length - MessagePOJO.HEADER_OFFSET];
-        buffer.get(serializedMessage);
 
         assertEquals(cType, serializedCType);
         assertEquals(bUserId, serializedBUserId);
-        assertArrayEquals(message, serializedMessage);
+        assertArrayEquals(message, messagePOJO.getDecryptedMessage());
     }
 
     @Test
-    public void testDeserialization() {
+    public void testDeserialization() throws Exception {
         int cType = 123;
         int bUserId = 456;
         byte[] message = "Hello, world!".getBytes(StandardCharsets.UTF_8);
@@ -49,7 +47,7 @@ public class MessagePOJOTest {
     }
 
     @Test
-    public void testChecksum() {
+    public void testChecksum() throws Exception {
         int cType = 123;
         int bUserId = 456;
         byte[] message = "Hello, world!".getBytes(StandardCharsets.UTF_8);
@@ -59,11 +57,11 @@ public class MessagePOJOTest {
 
         // Perform assertions
         // TODO: Add assertions for the expected checksum value based on the specific CRC16 implementation
-        assertEquals(CRC16.calculate(messagePOJO.serialize()), messagePOJO.CheckSum());
+        assertEquals(CRC16.calculate(messagePOJO.serialize()), checksum);
     }
 
     @Test
-    public void testLength() {
+    public void testLength() throws Exception {
         int cType = 123;
         int bUserId = 456;
         byte[] message = "Hello, world!".getBytes(StandardCharsets.UTF_8);
@@ -72,19 +70,20 @@ public class MessagePOJOTest {
         int length = messagePOJO.Length();
 
         // Perform assertions
-        int expectedLength = MessagePOJO.HEADER_OFFSET + message.length;
+        int expectedLength = MessagePOJO.HEADER_OFFSET + messagePOJO.getMessage().length;
         assertEquals(expectedLength, length);
     }
 
     @Test
-    public void testToString() {
+    public void testToString() throws Exception {
         int cType = 123;
         int bUserId = 456;
-        byte[] message = "Hello, world!".getBytes(StandardCharsets.UTF_8);
+        byte[] message = "Patron (Ukrainian: Патрон, pronounced [pɐˈtrɔn]; lit. 'cartridge'; born 20 July 2019[1]) is a detection dog and mascot for the State Emergency Service of Ukraine.[2][3] He is a Jack Russell Terrier.".getBytes(StandardCharsets.UTF_8);
 
         MessagePOJO messagePOJO = new MessagePOJO(cType, bUserId, message);
         String toString = messagePOJO.toString();
 
+        System.out.println(toString);
         // Perform assertions
         // TODO: Add assertions for the expected string representation based on the specific format
     }

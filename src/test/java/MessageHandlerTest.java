@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MessageHandlerTest {
 
     @Test
-    public void testSerialization() {
+    public void testSerialization() throws Exception {
         byte bSrc = 1;
         long bPktId = 123456789L;
         byte[] messageData = "Hello, world!".getBytes();
@@ -30,35 +30,35 @@ public class MessageHandlerTest {
         assertEquals(MessageHandler.HANDLER_MAGIC, serializedMagic);
         assertEquals(bSrc, serializedSrc);
         assertEquals(bPktId, serializedPktId);
-        assertEquals(messageData.length, serializedLen - messagePOJO.HEADER_OFFSET);
+        assertEquals(messagePOJO.getMessage().length + messagePOJO.HEADER_OFFSET, serializedLen);
         // TODO: Add assertions for the checksum values and the serialized message contents
     }
 
     @Test
-    public void testDeserialization() {
+    public void testDeserialization() throws Exception {
         byte bSrc = 1;
         long bPktId = 123456789L;
-        byte[] messageData = "Hello, world!".getBytes();
+        byte[] messageData = "Patron first came to prominence during the 2022 Russian invasion of Ukraine, during which Ukrainian president Volodymyr Zelenskyy awarded him the Order for Courage for his work in locating and defusing unexploded ordnance left behind by Russian troops.[4] As of 8 May 2022, Patron has found 236 such devices.".getBytes();
 
-        ByteBuffer buffer = ByteBuffer.allocate(18 + 8 + messageData.length);
-        ByteBuffer CheckSumbuffer = ByteBuffer.allocate(16);
+        MessagePOJO messagePOJO = new MessagePOJO(123, 456, messageData);
+
+        ByteBuffer buffer = ByteBuffer.allocate(18 + 8 + messagePOJO.getMessage().length);
+        ByteBuffer CheckSumBuffer = ByteBuffer.allocate(16);
         buffer.put(MessageHandler.HANDLER_MAGIC);
         buffer.put(bSrc);
         buffer.putLong(bPktId);
-        buffer.putInt(messageData.length + 8);
+        buffer.putInt(messagePOJO.getMessage().length + 8);
 
-        CheckSumbuffer.put(MessageHandler.HANDLER_MAGIC);
-        CheckSumbuffer.put(bSrc);
-        CheckSumbuffer.putLong(bPktId);
-        CheckSumbuffer.putInt(messageData.length + 8);
-        short CheckSum = CRC16.calculate(CheckSumbuffer.array());
+        CheckSumBuffer.put(MessageHandler.HANDLER_MAGIC);
+        CheckSumBuffer.put(bSrc);
+        CheckSumBuffer.putLong(bPktId);
+        CheckSumBuffer.putInt(messagePOJO.getMessage().length + 8);
+        short CheckSum = CRC16.calculate(CheckSumBuffer.array());
 
         buffer.putShort(CheckSum); // Placeholder for CRC16 header
 
-        MessagePOJO messagePOJO = new MessagePOJO(123, 456, messageData);
         buffer.put(messagePOJO.serialize());
         buffer.putShort(messagePOJO.CheckSum()); // Placeholder for CRC16 message
-
         byte[] arr = buffer.array();
         MessageHandler messageHandler = new MessageHandler(arr);
         System.out.println(messagePOJO);
@@ -66,7 +66,8 @@ public class MessageHandlerTest {
         assertEquals(MessageHandler.HANDLER_MAGIC, messageHandler.bMagic);
         assertEquals(bSrc, messageHandler.bSrc);
         assertEquals(bPktId, messageHandler.bPktId);
-        assertEquals(messageData.length + 8, messageHandler.wLen);
+        assertEquals(messagePOJO.getMessage().length + 8, messageHandler.wLen);
+        assertEquals(messagePOJO.getDecryptedMessage().length, messageData.length);
         // TODO: Add assertions for the checksum values and the deserialized message contents
     }
 }

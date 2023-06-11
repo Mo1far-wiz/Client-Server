@@ -11,8 +11,7 @@ public class MessageHandler {
     byte[] bMsg;
     short wCrc16Msg;
     MessagePOJO Message;
-    public MessageHandler(byte bSrc, long bPktId, MessagePOJO Message)
-    {
+    public MessageHandler(byte bSrc, long bPktId, MessagePOJO Message) {
         bMagic = HANDLER_MAGIC;
         this.bSrc = bSrc;
         this.bPktId = bPktId;
@@ -22,8 +21,7 @@ public class MessageHandler {
         this.Message = Message;
         wCrc16Msg = this.Message.CheckSum();
     }
-    public MessageHandler(byte[] arr)
-    {
+    public MessageHandler(byte[] arr) throws Exception {
         if(arr.length < 18)
         {
             throw new ExceptionInInitializerError("Invalid Header length");
@@ -31,19 +29,19 @@ public class MessageHandler {
 
         ByteBuffer Buffer = ByteBuffer.wrap(arr);
 
-        bMagic      = Buffer.get();
+        bMagic          = Buffer.get();
         if(bMagic != HANDLER_MAGIC)
         {
             throw new ExceptionInInitializerError("Wrong Magic");
         }
-        bSrc        = Buffer.get();
-        bPktId      = Buffer.getLong();
-        wLen        = Buffer.getInt();
-        wCrc16Header = Buffer.getShort();
-        bMsg        = new byte[wLen];
-        Buffer      .get(bMsg, 0, wLen);
-        wCrc16Msg   = Buffer.getShort();
-        Message = new MessagePOJO(bMsg);
+        bSrc            = Buffer.get();
+        bPktId          = Buffer.getLong();
+        wLen            = Buffer.getInt();
+        wCrc16Header    = Buffer.getShort();
+        bMsg            = new byte[wLen];
+        Buffer          .get(bMsg, 0, wLen);
+        wCrc16Msg       = Buffer.getShort();
+        Message         = new MessagePOJO(bMsg);
 
         if(wCrc16Header != CheckSum())
         {

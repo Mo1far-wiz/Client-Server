@@ -1,37 +1,16 @@
 package tictak;
 
 public class Data {
-    private int state = 1;
+    private int state=1;
 
-    public synchronized void Tic()
-    {
-        while (state != 1)
-        {
-            try
-            {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    public int getState() { return state; }
+
+    public void Tic(){
         System.out.print("Tic-");
-        state = 2;
-        notify();
+        state=2;
     }
-
-    public synchronized void Tak()
-    {
-        while (state != 2)
-        {
-            try
-            {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    public void Tak(){
         System.out.println("Tak");
-        state = 1;
-        notify();
+        state=1;
     }
 }

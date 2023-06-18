@@ -7,8 +7,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class DraftReceiver implements Receiver {
-    public DraftReceiver(ArrayBlockingQueue<byte[]> resMessages, Message stopMessage) {
-        Statics.resMessages = resMessages;
+    public DraftReceiver(Message stopMessage) {
         Statics.stopMessage = stopMessage;
     }
 
@@ -23,7 +22,8 @@ public class DraftReceiver implements Receiver {
             }
 
             Decryptor.decrypt(msg);
-            Message message = new Message(msg);
+            Packet packet = new Packet(msg);
+            Message message = packet.getMessage();
 
             if(message.equals(Statics.stopMessage))
             {

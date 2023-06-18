@@ -1,19 +1,21 @@
 package hw.Shop;
 
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.*;
 
 public class Groups {
-    public static ArrayBlockingQueue<Goods> groups;
+    public static CopyOnWriteArrayList<Goods> groups;
 
-    public Groups(ArrayBlockingQueue<Goods> groups) {
+    public Groups() {
+    }
+    public Groups(CopyOnWriteArrayList<Goods> groups) {
         this.groups = groups;
     }
 
     public void addGoods(Goods goods) {
-        groups.offer(goods);
+        groups.add(goods);
     }
 
-    public Goods getGoods() {
-        return groups.poll();
+    public Goods getGoods(int idx) {
+        return groups.get(idx);
     }
 }

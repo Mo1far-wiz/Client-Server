@@ -1,5 +1,6 @@
 package hw.Networking;
 
+import hw.MessageGenerator;
 import hw.Networking.Message;
 import hw.crc16;
 
@@ -76,5 +77,10 @@ public class Packet {
         HeaderBuffer.putLong(bPktId);
         HeaderBuffer.putInt(wLen);
         return crc16.calculate(HeaderBuffer.array());
+    }
+
+    public Message getMessage()
+    {
+        return Message;
     }
 }

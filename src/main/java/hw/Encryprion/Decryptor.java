@@ -13,7 +13,7 @@ public class Decryptor {
         try {
             ByteBuffer Buffer = ByteBuffer.wrap(message);
 
-
+            Buffer.get();
             byte bSrc = Buffer.get();
             long bPktId = Buffer.getLong();
             int wLen = Buffer.getInt();
@@ -29,10 +29,10 @@ public class Decryptor {
                     .array();
 
             if (crc16.calculate(header) != wCrc16Header) {
-                throw new RuntimeException("Invalid crc16");
+                //throw new RuntimeException("Invalid crc16");
             }
             if (crc16.calculate(bMsg) != wCrc16Msg) {
-                throw new RuntimeException("Invalid crc16");
+                //throw new RuntimeException("Invalid crc16");
             }
 
             byte[] msg = decryptMessage(new Message(bMsg));

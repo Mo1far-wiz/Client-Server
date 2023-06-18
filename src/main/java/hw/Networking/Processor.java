@@ -12,17 +12,14 @@ import java.util.concurrent.Executors;
 public class Processor implements Runnable{
     public void process(Message message) throws InterruptedException {
         String[] command = message.getStringMessage().split(" ");
-        int type = Integer.parseInt(command[1]);
+        //int type = Integer.parseInt(command[1]);
 
         switch (command[0])
         {
             case    "GET_PRODUCTS_AMOUNT":
             {
                 for (Goods group : Groups.groups) {
-                    if(group.getType() == type)
-                    {
                         System.out.println(group.getAmount());
-                    }
                 }
 
                 break;
@@ -31,10 +28,9 @@ public class Processor implements Runnable{
             {
                 int amount = Integer.parseInt(command[2]);
                 for (Goods group : Groups.groups) {
-                    if(group.getType() == type)
-                    {
+
                         group.deleteGoods(amount);
-                    }
+
                 }
 
                 break;
@@ -43,7 +39,6 @@ public class Processor implements Runnable{
             {
                 int amount = Integer.parseInt(command[2]);
                 for (Goods group : Groups.groups) {
-                    if(group.getType() == type)
                     {
                         group.addGoods(amount);
                     }
@@ -53,13 +48,11 @@ public class Processor implements Runnable{
             case    "ADD_GROUP" :
             {
                 for (Goods group : Groups.groups) {
-                    if(group.getType() == type)
                     {
                         break;
                     }
                 }
 
-                Groups.groups.put(new Goods(0, type, 0, "New Group"));
                 break;
             }
             case    "ADD_TITLE" :
@@ -70,7 +63,6 @@ public class Processor implements Runnable{
             case    "GET_PRICE" :
             {
                 for (Goods group : Groups.groups) {
-                    if(group.getType() == type)
                     {
                         System.out.println(group.getPrice());
                     }
@@ -78,7 +70,7 @@ public class Processor implements Runnable{
                 break;
             }
         }
-
+        System.out.println("Message processed");
         Statics.sender.sendMessage(message.serialize(), new InetSocketAddress(1488).getAddress());
     }
 

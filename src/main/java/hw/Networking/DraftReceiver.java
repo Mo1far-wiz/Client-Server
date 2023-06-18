@@ -38,6 +38,7 @@ public class DraftReceiver implements Receiver {
 
             if(message.equals(Statics.stopMessage))
             {
+                Statics.service.shutdown();
                 break;
             }
         }

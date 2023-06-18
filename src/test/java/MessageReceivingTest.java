@@ -24,22 +24,28 @@ public class MessageReceivingTest {
         Groups.groups.add(goods2);
 
         // Set up a queue to store received messages
-        Statics.resMessages = new ArrayBlockingQueue<byte[]>(1);
+        Statics.resMessages = new ArrayBlockingQueue<byte[]>(2);
 
         // Create a test message
         byte[] messageBytes = generateRandomMessage();
         Packet packet = new Packet(messageBytes);
         Message message = packet.getMessage();
 
-        Statics.resMessages.put(packet.serialize());
+        byte[] messageBytes2 = generateRandomMessage();
+        Packet packet2 = new Packet(messageBytes2);
+        Message message2 = packet2.getMessage();
 
-        DraftReceiver receiver = new DraftReceiver(message);
+        Statics.resMessages.put(packet.serialize());
+        Statics.resMessages.put(packet2.serialize());
+
+        DraftReceiver receiver = new DraftReceiver(message2);
         receiver.receiveMessage();
 
         //Statics.processor.process(message);
 
         // Wait for the message to be processed
-        Thread.sleep(100);
+
+
     }
 
     private byte[] generateRandomMessage() throws Exception {

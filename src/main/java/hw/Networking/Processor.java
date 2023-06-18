@@ -70,6 +70,8 @@ public class Processor implements Runnable{
                 break;
             }
         }
+        Thread.sleep(100);
+
         System.out.println("Message processed");
         Statics.sender.sendMessage(message.serialize(), new InetSocketAddress(1488).getAddress());
     }

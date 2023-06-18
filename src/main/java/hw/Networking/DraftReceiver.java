@@ -29,11 +29,13 @@ public class DraftReceiver implements Receiver {
 
             Statics.service.submit(()-> {
                 try {
-                    Statics.processor.process(message);
+                    Statics.processor.proc
+                ess(message);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             });
+
 
             if(message.equals(Statics.stopMessage))
             {

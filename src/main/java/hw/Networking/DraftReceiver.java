@@ -1,0 +1,43 @@
+package hw.Networking;
+
+import hw.Encryprion.Decryptor;
+import hw.Statics;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.TimeUnit;
+
+public class DraftReceiver implements Receiver {
+    public DraftReceiver(ArrayBlockingQueue<byte[]> resMessages, Message stopMessage) {
+        Statics.resMessages = resMessages;
+        Statics.stopMessage = stopMessage;
+    }
+
+    @Override
+    public void receiveMessage() throws Exception {
+        while(true){
+            byte[] msg = Statics.resMessages.poll(10, TimeUnit.SECONDS);
+
+            if(msg == null)
+            {
+                break;
+            }
+
+            Decryptor.decrypt(msg);
+            Message message = new Message(msg);
+
+            if(message.equals(Statics.stopMessage))
+            {
+                break;
+            }
+            System.out.println("Received : " + message);
+
+            Statics.service.submit(()-> {
+                try {
+                    Statics.processor.process(message);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+    }
+}

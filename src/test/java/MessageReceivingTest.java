@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,11 +42,8 @@ public class MessageReceivingTest {
         DraftReceiver receiver = new DraftReceiver(message2);
         receiver.receiveMessage();
 
-        //Statics.processor.process(message);
-
-        // Wait for the message to be processed
-
-
+        Thread.sleep(1000);
+        Statics.service.shutdown();
     }
 
     private byte[] generateRandomMessage() throws Exception {

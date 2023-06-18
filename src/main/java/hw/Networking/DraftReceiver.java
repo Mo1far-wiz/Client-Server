@@ -21,24 +21,27 @@ public class DraftReceiver implements Receiver {
                 break;
             }
 
-            msg = Decryptor.decrypt(msg);
             Packet packet = new Packet(msg);
+            Message oldMessage = packet.getMessage();
+
+            msg = Decryptor.decrypt(msg);
+            packet = new Packet(msg);
             Message message = packet.getMessage();
 
             System.out.println("Received : " + message);
 
+            Message finalMessage = message;
             Statics.service.submit(()-> {
                 try {
-                    Statics.processor.process(message);
+                    Statics.processor.process(finalMessage);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             });
 
-
-            if(message.equals(Statics.stopMessage))
+            if(oldMessage.equals(Statics.stopMessage))
             {
-                Statics.service.shutdown();
+                System.out.println("Stop Message");
                 break;
             }
         }

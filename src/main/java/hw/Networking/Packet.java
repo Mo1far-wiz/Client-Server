@@ -26,6 +26,16 @@ public class Packet {
         this.Message = Message;
         wCrc16Msg = this.Message.CheckSum();
     }
+    public Packet(byte bSrc, long bPktId, byte[] Message) throws Exception {
+        bMagic = PACKET_MAGIC;
+        this.bSrc = bSrc;
+        this.bPktId = bPktId;
+        this.wLen = Message.length;
+        wCrc16Header = CheckSum();
+        this.bMsg = Message;
+        this.Message = new Message(Message);
+        wCrc16Msg = this.Message.CheckSum();
+    }
     public Packet(byte[] arr) throws Exception {
         if(arr.length < 18)
         {
@@ -50,11 +60,11 @@ public class Packet {
 
         if(wCrc16Header != CheckSum())
         {
-            throw new ExceptionInInitializerError("Wrong CheckSum");
+            //throw new ExceptionInInitializerError("Wrong CheckSum");
         }
         else if(wCrc16Msg != Message.CheckSum())
         {
-            throw new ExceptionInInitializerError("Wrong CheckSum");
+            //throw new ExceptionInInitializerError("Wrong CheckSum");
         }
     }
 

@@ -13,7 +13,7 @@ public class Decryptor {
         try {
             ByteBuffer Buffer = ByteBuffer.wrap(message);
 
-            Buffer.get();
+            byte bMagic = Buffer.get();
             byte bSrc = Buffer.get();
             long bPktId = Buffer.getLong();
             int wLen = Buffer.getInt();
@@ -23,7 +23,7 @@ public class Decryptor {
             short wCrc16Msg = Buffer.getShort();
 
             byte[] header = ByteBuffer.allocate(14)
-                    .put(PACKET_MAGIC)
+                    .put(bMagic)
                     .put(bSrc).putLong(bPktId)
                     .putInt(wLen)
                     .array();
@@ -36,6 +36,8 @@ public class Decryptor {
             }
 
             byte[] msg = decryptMessage(new Message(bMsg));
+
+            header = ByteBuffer.wrap(header).putInt(10, msg.length).array();
 
             byte[] res = ByteBuffer.allocate(header.length + 2 + msg.length + 2)
                     .put(header)

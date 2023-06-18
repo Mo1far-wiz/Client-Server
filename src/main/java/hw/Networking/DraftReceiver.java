@@ -21,14 +21,10 @@ public class DraftReceiver implements Receiver {
                 break;
             }
 
-            Decryptor.decrypt(msg);
+            msg = Decryptor.decrypt(msg);
             Packet packet = new Packet(msg);
             Message message = packet.getMessage();
 
-            if(message.equals(Statics.stopMessage))
-            {
-                break;
-            }
             System.out.println("Received : " + message);
 
             Statics.service.submit(()-> {
@@ -38,6 +34,11 @@ public class DraftReceiver implements Receiver {
                     throw new RuntimeException(e);
                 }
             });
+
+            if(message.equals(Statics.stopMessage))
+            {
+                break;
+            }
         }
     }
 }

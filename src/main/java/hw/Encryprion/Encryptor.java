@@ -9,11 +9,21 @@ import java.nio.ByteBuffer;
 import static hw.Statics.*;
 
 public class Encryptor {
-    public static byte[] encrypt(Message message) {
+    public static byte[] encrypt(Message command) {
+        try {
+
+            return encryptMessage(command);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static byte[] encryptMessage(Message message) {
         try {
             Cipher cipher = Cipher.getInstance(CIPHER);
             cipher.init(Cipher.ENCRYPT_MODE, SECRET_KEY);
-            //message.doAction();
+
             byte[] msg = cipher.doFinal(message.getMessage());
             return ByteBuffer.allocate(Message.HEADER_OFFSET + msg.length)
                     .putInt(message.getCType())
@@ -23,5 +33,4 @@ public class Encryptor {
             throw new RuntimeException(e);
         }
     }
-
 }

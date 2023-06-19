@@ -46,7 +46,7 @@ public class Processor implements Runnable{
             }
         }
 
-        System.out.println("Message processed");
+        System.out.println(Thread.currentThread().getName() + " Message processed");
         Statics.responseService.submit(() -> {
             try {
                 Statics.sender.sendMessage(message.serialize(), new InetSocketAddress(1488).getAddress());

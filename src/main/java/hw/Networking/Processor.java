@@ -4,10 +4,7 @@ import hw.Shop.Goods;
 import hw.Shop.Groups;
 import hw.Statics;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Processor implements Runnable{
     public void process(Message message) throws InterruptedException {
@@ -50,7 +47,7 @@ public class Processor implements Runnable{
         }
 
         System.out.println("Message processed");
-        Statics.service.submit(() -> {
+        Statics.responseService.submit(() -> {
             try {
                 Statics.sender.sendMessage(message.serialize(), new InetSocketAddress(1488).getAddress());
             } catch (Exception e) {

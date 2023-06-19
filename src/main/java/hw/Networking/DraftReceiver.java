@@ -3,7 +3,6 @@ package hw.Networking;
 import hw.Encryprion.Decryptor;
 import hw.Statics;
 
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class DraftReceiver implements Receiver {
@@ -26,13 +25,13 @@ public class DraftReceiver implements Receiver {
 
             System.out.println("Received : " + message);
 
-            if(new Packet(msg).equals(Statics.stopPacket))
+            if(message.getStringMessage().equals("STOP"))
             {
                 System.out.println("Stop Packet");
                 break;
             }
 
-            Statics.service.submit(()-> {
+            Statics.receiveService.submit(()-> {
                 try {
                     Statics.processor.process(message);
                 } catch (InterruptedException e) {

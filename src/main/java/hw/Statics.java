@@ -1,10 +1,8 @@
 package hw;
 
-import hw.Networking.Message;
 import hw.Networking.Packet;
 import hw.Networking.Processor;
 import hw.Networking.Sender;
-import hw.Shop.Goods;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
@@ -22,7 +20,8 @@ public class Statics {
     public static Sender sender = new Sender();
 
 
-    public static ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 4);
+    public static ExecutorService receiveService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 4);
+    public static ExecutorService responseService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 4);
     public static ArrayBlockingQueue<byte[]> resMessages;
     public static Packet stopPacket;
 

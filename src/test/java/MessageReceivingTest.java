@@ -28,25 +28,29 @@ public class MessageReceivingTest {
         Statics.resMessages = new ArrayBlockingQueue<byte[]>(2);
 
         // Create a test message
-        byte[] messageBytes = generateRandomMessage();
+        byte[] messageBytes = generateRandomPacket();
         Packet packet = new Packet(messageBytes);
-        Message message = packet.getMessage();
 
-        byte[] messageBytes2 = generateRandomMessage();
+        byte[] messageBytes2 = generateRandomPacket();
         Packet packet2 = new Packet(messageBytes2);
-        Message message2 = packet2.getMessage();
 
         Statics.resMessages.put(packet.serialize());
         Statics.resMessages.put(packet2.serialize());
 
-        DraftReceiver receiver = new DraftReceiver(message2);
+        DraftReceiver receiver = new DraftReceiver(packet2);
         receiver.receiveMessage();
 
         Thread.sleep(1000);
         Statics.service.shutdown();
+
+        //Statics.processor.process(message);
+
+        // Wait for the message to be processed
+
+
     }
 
-    private byte[] generateRandomMessage() throws Exception {
+    private byte[] generateRandomPacket() throws Exception {
         // Generate a random message using the provided MessageGenerator class
         return MessageGenerator.generate();
     }

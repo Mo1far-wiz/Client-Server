@@ -1,6 +1,7 @@
 package hw;
 
 import hw.Networking.Message;
+import hw.Networking.Packet;
 import hw.Networking.Processor;
 import hw.Networking.Sender;
 import hw.Shop.Goods;
@@ -23,7 +24,7 @@ public class Statics {
 
     public static ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 4);
     public static ArrayBlockingQueue<byte[]> resMessages;
-    public static Message stopMessage;
+    public static Packet stopPacket;
 
     private static Key getSecureRandomKey(int keySize) {
         byte[] secureRandomKeyBytes = new byte[keySize / 8];

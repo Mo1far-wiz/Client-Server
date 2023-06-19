@@ -1,6 +1,8 @@
 package hw.Encryprion;
 
 import hw.Networking.Message;
+import hw.Networking.Packet;
+import hw.Statics;
 import hw.crc16;
 
 import javax.crypto.Cipher;
@@ -22,46 +24,47 @@ public class Decryptor {
             Buffer.get(bMsg, 0, wLen);
             short wCrc16Msg = Buffer.getShort();
 
+            byte[] msg = decryptMessage(bMsg);
+
+
             byte[] header = ByteBuffer.allocate(14)
                     .put(bMagic)
-                    .put(bSrc).putLong(bPktId)
-                    .putInt(wLen)
+                    .put(bSrc)
+                    .putLong(bPktId)
+                    .putInt(msg.length)
                     .array();
 
-            if (crc16.calculate(header) != wCrc16Header) {
-                //throw new RuntimeException("Invalid crc16");
-            }
-            if (crc16.calculate(bMsg) != wCrc16Msg) {
-                //throw new RuntimeException("Invalid crc16");
-            }
-
-            byte[] msg = decryptMessage(new Message(bMsg));
-
-            header = ByteBuffer.wrap(header).putInt(10, msg.length).array();
-
-            byte[] res = ByteBuffer.allocate(header.length + 2 + msg.length + 2)
+            byte[] packet = ByteBuffer.allocate(header.length + 2 + msg.length + 2)
                     .put(header)
                     .putShort(crc16.calculate(header))
                     .put(msg)
                     .putShort(crc16.calculate(msg))
                     .array();
 
-            return res;
+            return packet;
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
-    private static byte[] decryptMessage(Message message) {
+    public static byte[] decryptMessage(byte[] message) {
         try {
             Cipher cipher = Cipher.getInstance(CIPHER);
             cipher.init(Cipher.DECRYPT_MODE, SECRET_KEY);
 
-            byte[] msg = cipher.doFinal(message.getMessage());
+            ByteBuffer Buffer = ByteBuffer.wrap(message);
+            int cType = Buffer.getInt();
+            int bUserId = Buffer.getInt();
+            byte[] encrypted = new byte[Buffer.limit() - Buffer.position()];
+            System.out.println(encrypted.length);
+            Buffer.get(encrypted);
+            byte[] msg = cipher.doFinal(encrypted);
+
             return ByteBuffer.allocate(Message.HEADER_OFFSET + msg.length)
-                    .putInt(message.getCType())
-                    .putInt(message.getBUserId())
+                    .putInt(cType)
+                    .putInt(bUserId)
                     .put(msg).array();
         } catch (Exception e) {
             throw new RuntimeException(e);

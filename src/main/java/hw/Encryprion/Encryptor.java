@@ -11,9 +11,7 @@ import static hw.Statics.*;
 public class Encryptor {
     public static byte[] encrypt(Message command) {
         try {
-
             return encryptMessage(command);
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

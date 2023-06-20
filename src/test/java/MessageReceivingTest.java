@@ -1,3 +1,4 @@
+import hw.Encryprion.Encryptor;
 import hw.MessageGenerator;
 import hw.Networking.DraftReceiver;
 import hw.Networking.Message;
@@ -7,9 +8,8 @@ import hw.Shop.Groups;
 import hw.Statics;
 import org.junit.jupiter.api.Test;
 
-import java.net.InetSocketAddress;
+import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,30 +25,47 @@ public class MessageReceivingTest {
         Groups.groups.add(goods2);
 
         // Set up a queue to store received messages
-        Statics.resMessages = new ArrayBlockingQueue<byte[]>(2);
+        Statics.resMessages = new ArrayBlockingQueue<byte[]>(3);
 
         // Create a test message
-        byte[] messageBytes = generateRandomMessage();
+        byte[] messageBytes = generateRandomPacket();
         Packet packet = new Packet(messageBytes);
-        Message message = packet.getMessage();
 
-        byte[] messageBytes2 = generateRandomMessage();
+        byte[] messageBytes2 = generateRandomPacket();
         Packet packet2 = new Packet(messageBytes2);
-        Message message2 = packet2.getMessage();
+
+        byte[] stopMessageBytes = generateStopPacket();
+        Packet stopPacket = new Packet(stopMessageBytes);
 
         Statics.resMessages.put(packet.serialize());
         Statics.resMessages.put(packet2.serialize());
+        Statics.resMessages.put(stopPacket.serialize());
 
-        DraftReceiver receiver = new DraftReceiver(message2);
+        DraftReceiver receiver = new DraftReceiver(packet2);
         receiver.receiveMessage();
 
         Thread.sleep(1000);
-        Statics.service.shutdown();
+        Statics.receiveService.shutdown();
+        Statics.responseService.shutdown();
+        //Statics.processor.process(message);
+
+        // Wait for the message to be processed
+
+
     }
 
-    private byte[] generateRandomMessage() throws Exception {
+    private byte[] generateRandomPacket() throws Exception {
         // Generate a random message using the provided MessageGenerator class
         return MessageGenerator.generate();
+    }
+
+    private byte[] generateStopPacket() throws Exception {
+        Random random = new Random();
+        String commandMsg = "STOP";
+        Message testMessage = new Message(-1, 1, commandMsg.getBytes());
+        long bPktId = random.nextLong();
+        Packet packet = new Packet((byte) 0x1, bPktId, Encryptor.encrypt(testMessage));
+        return packet.serialize();
     }
 
     private Message deserializeMessage(byte[] messageBytes) throws Exception {

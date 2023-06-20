@@ -3,12 +3,11 @@ package hw.Networking;
 import hw.Encryprion.Decryptor;
 import hw.Statics;
 
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class DraftReceiver implements Receiver {
-    public DraftReceiver(Message stopMessage) {
-        Statics.stopMessage = stopMessage;
+    public DraftReceiver(Packet stopPacket) {
+        Statics.stopPacket = stopPacket;
     }
 
     @Override
@@ -21,29 +20,24 @@ public class DraftReceiver implements Receiver {
                 break;
             }
 
-            Packet packet = new Packet(msg);
-            Message oldMessage = packet.getMessage();
-
-            msg = Decryptor.decrypt(msg);
-            packet = new Packet(msg);
+            Packet packet = new Packet(Decryptor.decrypt(msg));
             Message message = packet.getMessage();
 
             System.out.println("Received : " + message);
 
-            Message finalMessage = message;
-            Statics.service.submit(()-> {
+            if(message.getStringMessage().equals("STOP"))
+            {
+                System.out.println("Stop Packet");
+                break;
+            }
+
+            Statics.receiveService.submit(()-> {
                 try {
-                    Statics.processor.process(finalMessage);
+                    Statics.processor.process(message);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             });
-
-            if(oldMessage.equals(Statics.stopMessage))
-            {
-                System.out.println("Stop Message");
-                break;
-            }
         }
     }
 }

@@ -60,11 +60,11 @@ public class Packet {
 
         if(wCrc16Header != CheckSum())
         {
-            //throw new ExceptionInInitializerError("Wrong CheckSum");
+            throw new ExceptionInInitializerError("Wrong CheckSum");
         }
         else if(wCrc16Msg != Message.CheckSum())
         {
-            //throw new ExceptionInInitializerError("Wrong CheckSum");
+            throw new ExceptionInInitializerError("Wrong CheckSum");
         }
     }
 
@@ -81,7 +81,7 @@ public class Packet {
     }
     private short CheckSum()
     {
-        ByteBuffer HeaderBuffer = ByteBuffer.allocate(16);
+        ByteBuffer HeaderBuffer = ByteBuffer.allocate(14);
         HeaderBuffer.put(bMagic);
         HeaderBuffer.put(bSrc);
         HeaderBuffer.putLong(bPktId);

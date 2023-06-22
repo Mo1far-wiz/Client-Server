@@ -11,7 +11,7 @@ import java.nio.ByteBuffer;
 import static hw.Statics.*;
 
 public class Decryptor {
-    public static byte[] decrypt(byte[] message) {
+    public static byte[] decryptPacket(byte[] message) {
         try {
             ByteBuffer Buffer = ByteBuffer.wrap(message);
 
@@ -24,7 +24,7 @@ public class Decryptor {
             Buffer.get(bMsg, 0, wLen);
             short wCrc16Msg = Buffer.getShort();
 
-            byte[] msg = decryptMessage(bMsg);
+            byte[] msg = decrypt(bMsg);
 
 
             byte[] header = ByteBuffer.allocate(14)
@@ -49,8 +49,12 @@ public class Decryptor {
         }
     }
 
-    public static byte[] decryptMessage(byte[] message) {
+    public static byte[] decrypt(byte[] message) {
         try {
+            if(message.length == 0)
+            {
+                return null;
+            }
             Cipher cipher = Cipher.getInstance(CIPHER);
             cipher.init(Cipher.DECRYPT_MODE, SECRET_KEY);
 
@@ -58,7 +62,6 @@ public class Decryptor {
             int cType = Buffer.getInt();
             int bUserId = Buffer.getInt();
             byte[] encrypted = new byte[Buffer.limit() - Buffer.position()];
-            System.out.println(encrypted.length);
             Buffer.get(encrypted);
             byte[] msg = cipher.doFinal(encrypted);
 

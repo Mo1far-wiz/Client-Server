@@ -6,37 +6,30 @@ import hw.Statics;
 
 import java.net.InetSocketAddress;
 
-public class Processor implements Runnable{
+public class Processor {
     public void process(Message message) throws InterruptedException {
         String[] command = message.getStringMessage().split(" ");
 
-        switch (command[0])
-        {
-            case    "GET_PRODUCTS_AMOUNT":
-            {
+        switch (command[0]) {
+            case "GET_PRODUCTS_AMOUNT": {
 
                 break;
             }
-            case    "DELETE_PRODUCTS_AMOUNT" :
-            {
+            case "DELETE_PRODUCTS_AMOUNT": {
 
                 break;
             }
-            case    "ADD_PRODUCTS_AMOUNT" :
-            {
+            case "ADD_PRODUCTS_AMOUNT": {
                 break;
             }
-            case    "ADD_GROUP" :
-            {
+            case "ADD_GROUP": {
                 break;
             }
-            case    "ADD_TITLE" :
-            {
+            case "ADD_TITLE": {
 
                 break;
             }
-            case    "GET_PRICE" :
-            {
+            case "GET_PRICE": {
                 for (Goods group : Groups.groups) {
                     {
                         System.out.println(group.getPrice());
@@ -46,7 +39,7 @@ public class Processor implements Runnable{
             }
         }
 
-        System.out.println(Thread.currentThread().getName() + " Message processed");
+        //System.out.println(Thread.currentThread().getName() + " Message processed");
         Statics.responseService.submit(() -> {
             try {
                 Statics.sender.sendMessage(message.serialize(), new InetSocketAddress(1488).getAddress());
@@ -56,12 +49,7 @@ public class Processor implements Runnable{
         });
     }
 
-    @Override
-    public void run() {
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public Message fakeProcess (Message message) throws InterruptedException {
+        return new Message(message.getCType(), message.getBUserId(), "Processed".getBytes());
     }
 }

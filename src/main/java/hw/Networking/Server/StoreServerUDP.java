@@ -3,7 +3,7 @@ package hw.Networking.Server;
 import hw.Encryprion.Decryptor;
 import hw.Encryprion.Encryptor;
 import hw.Networking.Message;
-import hw.Statics;
+import hw.Statics.Statics;
 
 import java.net.*;
 import java.util.Objects;

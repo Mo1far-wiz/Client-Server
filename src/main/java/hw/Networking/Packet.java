@@ -1,11 +1,9 @@
 package hw.Networking;
 
-import hw.MessageGenerator;
-import hw.Networking.Message;
-import hw.crc16;
+import hw.Statics.crc16;
 
 import java.nio.ByteBuffer;
-import static hw.Statics.*;
+import static hw.Statics.Statics.*;
 
 public class Packet {
     byte bMagic;

@@ -1,8 +1,8 @@
 package hw.Networking;
 
-import hw.Shop.Goods;
+import hw.Shop.Product;
 import hw.Shop.Groups;
-import hw.Statics;
+import hw.Statics.Statics;
 
 import java.net.InetSocketAddress;
 
@@ -30,7 +30,7 @@ public class Processor {
                 break;
             }
             case "GET_PRICE": {
-                for (Goods group : Groups.groups) {
+                for (Product group : Groups.groups) {
                     {
                         System.out.println(group.getPrice());
                     }

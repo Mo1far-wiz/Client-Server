@@ -3,19 +3,19 @@ package hw.Shop;
 import java.util.concurrent.*;
 
 public class Groups {
-    public static CopyOnWriteArrayList<Goods> groups;
+    public static CopyOnWriteArrayList<Product> groups;
 
     public Groups() {
     }
-    public Groups(CopyOnWriteArrayList<Goods> groups) {
+    public Groups(CopyOnWriteArrayList<Product> groups) {
         this.groups = groups;
     }
 
-    public void addGoods(Goods goods) {
-        groups.add(goods);
+    public void addGoods(Product product) {
+        groups.add(product);
     }
 
-    public Goods getGoods(int idx) {
+    public Product getGoods(int idx) {
         return groups.get(idx);
     }
 }

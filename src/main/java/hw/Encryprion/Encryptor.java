@@ -1,12 +1,11 @@
 package hw.Encryprion;
 
 import hw.Networking.Message;
-import hw.crc16;
 
 import javax.crypto.Cipher;
 import java.nio.ByteBuffer;
 
-import static hw.Statics.*;
+import static hw.Statics.Statics.*;
 
 public class Encryptor {
     public static byte[] encrypt(Message command) {

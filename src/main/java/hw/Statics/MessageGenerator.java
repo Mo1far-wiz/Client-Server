@@ -1,4 +1,4 @@
-package hw;
+package hw.Statics;
 
 import hw.Encryprion.Encryptor;
 import hw.Networking.Message;

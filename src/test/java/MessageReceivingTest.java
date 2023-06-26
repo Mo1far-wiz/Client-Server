@@ -1,11 +1,11 @@
 import hw.Encryprion.Encryptor;
-import hw.MessageGenerator;
+import hw.Statics.MessageGenerator;
 import hw.Networking.DraftReceiver;
 import hw.Networking.Message;
 import hw.Networking.Packet;
-import hw.Shop.Goods;
+import hw.Shop.Product;
 import hw.Shop.Groups;
-import hw.Statics;
+import hw.Statics.Statics;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -18,11 +18,11 @@ public class MessageReceivingTest {
     @Test
     public void testMessageReceiving() throws Exception {
         // Set up test data
-        Groups.groups = new java.util.concurrent.CopyOnWriteArrayList<Goods>();
-        Goods goods1 = new Goods(10, 1, 20, "Item 1");
-        Goods goods2 = new Goods(15, 2, 30, "Item 2");
-        Groups.groups.add(goods1);
-        Groups.groups.add(goods2);
+        Groups.groups = new java.util.concurrent.CopyOnWriteArrayList<Product>();
+        Product product1 = new Product(10, "Q", 20, "Item 1");
+        Product product2 = new Product(15, "W", 30, "Item 2");
+        Groups.groups.add(product1);
+        Groups.groups.add(product2);
 
         // Set up a queue to store received messages
         Statics.resMessages = new ArrayBlockingQueue<byte[]>(3);

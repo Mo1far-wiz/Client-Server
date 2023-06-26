@@ -2,9 +2,7 @@ import hw.Encryprion.Encryptor;
 import hw.Networking.Client.StoreClientUDP;
 import hw.Networking.Message;
 import hw.Networking.Server.StoreServerUDP;
-import hw.Shop.Goods;
-import org.junit.After;
-import org.junit.Before;
+import hw.Shop.Product;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -17,13 +15,13 @@ public class TestMainUDP {
     StoreServerUDP server;
     DatagramSocket ClientSocket;
     int PORT = 6666;
-    Goods berries = new Goods(1, 1,120, "add 100");
-    Goods berries2 = new Goods(1, 1,120, "delete 1");
+    Product berries = new Product(1, "Q",120, "add 100");
+    Product berries2 = new Product(1, "W",120, "delete 1");
     Message message = new Message(4, 1, berries.toString().getBytes());
     Message message2 = new Message(4, 1, berries2.toString().getBytes());
 
 
-    Goods OK = new Goods(1,1,1, "OK");
+    Product OK = new Product(1,"Q",1, "OK");
     Message OKK = new Message(message.getCType(), message.getBUserId(), "Processed".getBytes());
 
     @BeforeEach

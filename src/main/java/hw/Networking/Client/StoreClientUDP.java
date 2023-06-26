@@ -1,11 +1,9 @@
 package hw.Networking.Client;
 
 import hw.Encryprion.Decryptor;
-import hw.Encryprion.Encryptor;
 import hw.Networking.Message;
-import hw.Statics;
+import hw.Statics.Statics;
 
-import java.io.IOException;
 import java.net.*;
 
 import static hw.Encryprion.Encryptor.encrypt;

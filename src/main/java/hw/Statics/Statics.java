@@ -1,4 +1,4 @@
-package hw;
+package hw.Statics;
 
 import hw.Networking.Packet;
 import hw.Networking.Processor;
@@ -24,6 +24,8 @@ public class Statics {
     public static ExecutorService responseService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 4);
     public static ArrayBlockingQueue<byte[]> resMessages;
     public static Packet stopPacket;
+
+    public static int ID = 1;
 
     private static Key getSecureRandomKey(int keySize) {
         byte[] secureRandomKeyBytes = new byte[keySize / 8];

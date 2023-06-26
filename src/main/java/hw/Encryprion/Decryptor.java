@@ -1,14 +1,12 @@
 package hw.Encryprion;
 
 import hw.Networking.Message;
-import hw.Networking.Packet;
-import hw.Statics;
-import hw.crc16;
+import hw.Statics.crc16;
 
 import javax.crypto.Cipher;
 import java.nio.ByteBuffer;
 
-import static hw.Statics.*;
+import static hw.Statics.Statics.*;
 
 public class Decryptor {
     public static byte[] decryptPacket(byte[] message) {

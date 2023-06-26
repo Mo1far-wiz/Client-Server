@@ -1,30 +1,43 @@
 package hw.Shop;
 
+import hw.Statics.Statics;
+
 import java.nio.ByteBuffer;
 
-public class Goods {
+public class Product {
+    private int id;
     private int amount;
-    private int type;
-    private int price;
+    private String category;
+    private double price;
     private String title;
 
-    public Goods(int amount, int type, int price, String title)
+    public Product(int amount, String category, double price, String title)
     {
         this.amount = amount;
-        this.type = type;
+        this.category = category;
         this.price = price;
         this.title = title;
+        id = Statics.ID++;
+    }
+
+    public Product(String title, double price, int amount, String category)
+    {
+        this.amount = amount;
+        this.category = category;
+        this.price = price;
+        this.title = title;
+        id = Statics.ID++;
     }
 
     public void setAmount(int amount)
     {
         this.amount = amount;
     }
-    public void setType(int type)
+    public void setCategory(String category)
     {
-        this.type = type;
+        this.category = category;
     }
-    public void setPrice(int price)
+    public void setPrice(double price)
     {
         this.price = price;
     }
@@ -37,13 +50,20 @@ public class Goods {
     {
         return amount;
     }
-    public int getType()
+    public String getCategory()
     {
-        return type;
+        return category;
     }
-    public int getPrice()
+    public double getPrice()
     {
         return price;
+    }
+    public String getTitle() {
+        return title;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void addGoods(int amount)
@@ -62,10 +82,10 @@ public class Goods {
     }
 
     public byte[] toBytes(){
-        return ByteBuffer.allocate(4 + 4 + 4)
+        return ByteBuffer.allocate(4 + 4 + category.getBytes().length)
                 .putInt(amount)
-                .putInt(type)
-                .putInt(price)
+                .putDouble(price)
+                .put(category.getBytes())
                 .array();
     }
 
@@ -73,7 +93,7 @@ public class Goods {
     public String toString() {
         return "Goods{" +
                 "amount=" + amount +
-                ", type=" + type +
+                ", type=" + category +
                 ", price=" + price +
                 '}';
     }

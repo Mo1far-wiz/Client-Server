@@ -1,7 +1,7 @@
 package hw.Networking;
 
 import hw.Encryprion.Decryptor;
-import hw.Statics;
+import hw.Statics.Statics;
 
 import java.util.concurrent.TimeUnit;
 

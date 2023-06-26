@@ -1,9 +1,8 @@
 package hw.Networking;
 
-import hw.crc16;
+import hw.Statics.crc16;
 
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package hw;
+package hw.Statics;
 
 public class crc16 {
     private crc16() {}

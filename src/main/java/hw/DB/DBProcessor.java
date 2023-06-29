@@ -52,7 +52,8 @@ public class DBProcessor {
     public ArrayList<Product> Read() {
         ArrayList<Product> res = new ArrayList<>();
 
-        try (Statement st = con.createStatement()) {
+        try (Statement st = con.createStatement())
+        {
 
             ResultSet set = st.executeQuery("SELECT * FROM PRODUCTS");
 
@@ -85,7 +86,8 @@ public class DBProcessor {
             st.setInt(5, product.getId());
             st.executeUpdate();
             int result = st.executeUpdate();
-        }catch(SQLException e){
+        }
+        catch(SQLException e){
             System.out.println("Не вірний SQL запит на вибірку даних");
             e.printStackTrace();
         }
@@ -101,6 +103,26 @@ public class DBProcessor {
             System.out.println("Не вірний SQL запит на вибірку даних");
             e.printStackTrace();
         }
+    }
+
+    public Product Get(int id)
+    {
+        try(PreparedStatement st = con.prepareStatement("SELECT * FROM PRODUCTS WHERE ID = ?"))
+        {
+            st.setInt(1, id);
+            ResultSet set = st.executeQuery();
+
+            if(set.next())
+                return new Product( set.getString("TITLE"), set.getDouble("PRICE"),
+                                    set.getInt("AMOUNT"), set.getString("CATEGORY"));
+            else
+                return null;
+
+        }catch(SQLException e){
+            System.out.println("Не вірний SQL запит на вибірку даних");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // Criteria = new String("PRICE <= 10")

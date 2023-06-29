@@ -1,6 +1,7 @@
 package hw.Shop;
 
 import hw.Statics.Statics;
+import org.json.JSONObject;
 
 import java.nio.ByteBuffer;
 
@@ -28,6 +29,15 @@ public class Product {
         this.title = title;
         id = Statics.ID++;
     }
+
+    public Product(JSONObject jsonObject) {
+        this.amount = jsonObject.getInt("amount");
+        this.category = jsonObject.getString("category");
+        this.price = jsonObject.getDouble("price");
+        this.title = jsonObject.getString("title");
+        id = Statics.ID++;
+    }
+
 
     public void setAmount(int amount)
     {
@@ -91,10 +101,11 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Goods{" +
-                "amount=" + amount +
-                ", type=" + category +
+        return "Product{" +
+                "title='" + title + '\'' +
+                ", amount=" + amount +
                 ", price=" + price +
+                ", category=" + category +
                 '}';
     }
 }
